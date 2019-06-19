@@ -1,12 +1,17 @@
 ---
 title: "ONS Data Challenge 2019"
-author: "Nina Di Cara and Tiff Massey"
+author: 
+- "Nina Di Cara, University of Bristol"
+- "Tiff Massey, Ernst and Young"
 date: "19 June 2019"
 output: html_document
 ---
 
 ```{r setup, echo=FALSE}
-
+df <- readRDS('set-up-files/df.RDS')
+df_scaled <- readRDS('set-up-files/df_scaled.RDS')
+desirability_range <- readRDS('set-up-files/desirability_range.RDS')
+influential_outliers <- readRDS("set-up-files/influential_outliers.RDS")
 
 ```
 
@@ -14,10 +19,14 @@ output: html_document
 
 #Is loneliness associated with movement for education?
 
-Recent research has shown that loneliness is a common underlying factor for many physical illnesses, such as cardiovascular disease, dementia... A direction of causality has not been established for this association, however it has prompted an increased interest in loneliness in our population, and how it may be addressed.  
+Recent research has shown that loneliness is a common underlying factor for many illnesses and, whilst a direction of causality has not been established for this association, it has prompted an increased interest in understanding loneliness in our population.
 
-The ONS have developed a ['Loneliness Index'](https://datasciencecampus.ons.gov.uk/developing-a-loneliness-prescription-index/) which determines the levels of loneliness associated with each GP practice, using prescribing data for loneliness-related illnesses. This data is available for the years 2016, 2017 and 2018. Using this, we were tasked to explore whether there was an association between the Loneliness Index scores and movement for the purposes of education, as part of a [data challenge](https://www.bristol.ac.uk/golding/get-involved/competitions/loneliness-and-movement-for-education-competition/) by the ONS and the Jean Golding Institute at the University of Bristol. 
-<br><br>
+The ONS have developed a ['Loneliness Index'](https://datasciencecampus.ons.gov.uk/developing-a-loneliness-prescription-index/) which determines the levels of loneliness associated with each GP practice in the UK, using prescribing data for loneliness-related illnesses. This data is available for the years 2016, 2017 and 2018. Using this, we were tasked to explore whether there was an association between the Loneliness Index scores and movement for the purposes of education, as part of a [data challenge](https://www.bristol.ac.uk/golding/get-involved/competitions/loneliness-and-movement-for-education-competition/) by the ONS and the Jean Golding Institute at the University of Bristol. 
+
+
+Details of the datasets and code used in this report can be found on our [GitHub repository](https://github.com/ninadicara/ons-data-challenge-2019). 
+
+<br>
 
 ###Why do people move for education?
 To develop our research question, we first considered the main reasons why people move for education:
@@ -30,56 +39,316 @@ To develop our research question, we first considered the main reasons why peopl
 
 <br>
 
-Bearing this in mind, we made the assumption that **in the majority of cases, movement for primary and  secondary education is associated with upward social mobility. That is, moving to try to get into a better school than is available in the local area.**
+Bearing this in mind, we made the assumption that **in the majority of cases, movement for primary and  secondary education is associated with upward social mobility.** That is, moving to try to get into a better school than is available in the local area.
 
-Using this assumption, we decided to pursue the follow research question, which is concerned with the movement of primary and secondary school children. 
+Using this assumption, we decided to pursue the follow research question, which is concerned with the movement of primary and secondary school children, and their families. 
 
 
 > **RQ:** Is community-level loneliness associated with the quality of local schools, and how far can this be attributed to the movement of families pursuing upward social mobility through education?
 
 
-###The data
+### The data we used
 To answer our research question using open data we decided to create two new metrics:  
 
-* School Desireability Score (SDS)  
-* Mobile Population  
+* School Desirability Score (SDS)  
+* Mobile School-Age Population  
 
 <br>
+The first concern was how to model the movement of people so that it was representative of movement **for** education. We theorised that if loneliness was being created by frequent changes in communities due to very good or very poor education in the local area, then the net migration score would not represent this. For instance, if half the population moved away, and an equivalent number moved in the net migration would be 0, despite there being a huge change in the community. So, we decided to model population change as the sum of the inflow and outflow of people, against the total population.  
 
-```{r pop_change, echo=FALSE, out.width='25%'}
+In order to capture those moving for primary and secondary education, we decided to consider the movement of just 5 to 14 year olds. We did not include 14 to 19 year olds as this would caputure the huge volume of people moving to university each year.
+
+```{r pop_change, fig.align="center", echo=FALSE, out.width='23%'}
 knitr::include_graphics('images/pop_change.jpg')
 ```
 
-The first concern was how to model the 
+
+Next, we developed a 'school desirability score' (SDS), to model the quality of schooling in each area. Using the open data available we identified four variables which may relate to the quality of education, and thus its desirability. We standardised the variables, and then combined them to create an overall SDS for each school, and thus an overall score for each Local Authority.
 
 
-```{r SDS, echo=FALSE, out.width='60%'}
+```{r SDS, fig.align="center", echo=FALSE, out.width='60%'}
 knitr::include_graphics('images/SDS.jpg')
 ```
 
+<br>
+
+To demonstrate how these scores can be used to describe features of a local authority, the plot below shows the Mean Absolute Deviation (MAD) in SDS within Local Authorities, to give a sense of which local authorities experience a greater range of educational opportunities within their borders. 
+
+```{r SDSrange, echo = FALSE, error=FALSE, warning=FALSE, message=FALSE}
+
+library(plotly)
+
+# SDS range 
+plot_ly(x =desirability_range$LA.name,
+        y = desirability_range$desirability.metric, 
+        type = "scatter"
+        ) %>%
+  layout(xaxis = list(title = "Local Authority"),
+         yaxis = list(title = "Mean Absolute Deviation in SDS"),
+         showlegend = FALSE)
 
 
-The SDS we developed was based on four metrics, as described in them image. We sought 
+```
 
+<br>
+Then, in the below plot there is an overview of how the population mobility varies between local authorities. You can see that some local authorities experience much more movement of young people relative to their populations, for instance Barking and Dagenham. 
 
+```{r poprange, echo = FALSE, error=FALSE, warning=FALSE, message=FALSE}
 
-##Results
+library(plotly)
+df <- df%>%filter(year == '2017')
+df2 <- df[, c(1,3,14)] %>% unique()
 
+# population change
+plot_ly(x =df2$LEA.name,
+        y = df2$pop_change, 
+        type = "scatter"
+        ) %>%
+  layout(xaxis = list(title = "Local Authority"),
+         yaxis = list(title = "Population Mobility Score for 5-14 Year Olds"),
+         showlegend = FALSE)
 
-###How well do SDS and the Mobile Population model the data?
-
-```{r }
-#visualisations of loneliness
 
 ```
 
 
-###Associations between movement for education and loneliness
+After producing and exploring these metrics, we were interested to know whether Population Mobility could be explained by SDS. A linear regression model of this relationship (with three outliers removed) shows that whilst there is a significant (*p* < 0.005) positive association between these variables, SDS only explains a very small amount of the variance in population mobility.
+
+```{r SDSpopmob, echo = FALSE, error=FALSE, warning=FALSE, message=FALSE}
+
+library(dplyr)
+library(plotly)
+
+joined_data <- readRDS("set-up-files/joined_data.RDS") #see creation of this in 'Desirability metric and outputs.R'
+
+joined_data2 <- joined_data %>% filter(year == '2017')
+
+aggregate_loneliness <- joined_data %>%
+                        filter( year == "2017")%>%
+                        group_by(LEA.name) %>%
+                        summarise(loneliness_zscore = mean(loneliness_zscore),
+                                  pop_change = mean(pop_change),
+                                  SDS = mean(SDS))
+#remove outliers
+outliers <- c("Barking and Dagenham", "Rutland", "Redbridge")
+aggregate_loneliness <- aggregate_loneliness[!(aggregate_loneliness$LEA.name %in% outliers),]
+
+plot_ly(x =aggregate_loneliness$SDS,
+        y = aggregate_loneliness$pop_change, 
+        type = "scatter", 
+        name = "Desirability Metric against Population change") %>%
+  add_trace(x = aggregate_loneliness$SDS,
+            y = fitted(lm(aggregate_loneliness$pop_change ~ aggregate_loneliness$SDS)),
+            mode = "lines",
+            name = "Correlation between SDS and population mobility") %>%
+  layout(xaxis = list(title = "SDS"),
+         yaxis = list(title = "Population Mobility in 5-14 year olds"),
+         showlegend = FALSE)
+
+#model <- lm(aggregate_loneliness$pop_change ~ aggregate_loneliness$SDS)
 
 
-So, we set out to explore how we could capture these types of movement using open government data. Before attempting to do so, though, we had to acknowledge some problems that come from using the data that is openly available: 
-* The measures used for the Loneliness Index are highly associated with age related diseases (e.g. hypertension, cardiovascular disease, dementia) or mental health (insomnia, depression, anxiety).  
-* The Loneliness Index may be influenced by specific prescribing policies in each individual NHS trust.  
-* Undergraduates often stay registered at their home GP, so measuring GP prescribing may not be accurate for undergraduate populations.  
-* No information is publically available on where people have moved to-from, only the inflow and outflow from each area. 
-* Movement within boroughs (i.e. to new catchment areas) may have as significant effect on loneliness as movement between actual Local Authorities but there are no figures for this data publicly available.  
+```
+
+
+<br>
+
+
+
+### So, is loneliness associated with movement for education? {.tabset}
+
+Prior to analysing the relationships between our scores and loneliness we mapped all the data to Local Education Authorities (LEAs), and removed some influential observations from the dataset. Particuarly influential results came from areas with population mobility and/or loneliness scores outside of the normal range. 
+
+```{r outliers, echo=FALSE, error = FALSE, warning=FALSE, message=FALSE}
+library(knitr)
+colnames(influential_outliers)[c(1,3,12,14)] <- c("Year", "LEA Name", "Loneliness Z-Score", "Population Mobility" )
+kable(influential_outliers[, c(1, 3, 12, 14)])
+
+```
+
+<br>
+Since we only had all the data we needed in 2017, we only included 2017 data in the analysis. 
+
+Following removal of influential outliers, initial data exploration showed some interesting results that we were not expecting. For instance that loneliness and the Index of Multiple Deprivation (IMD) score were not associated (*p* = 0.80, *R^2^* = 0.000009), and neither were SDS and IMD (*p* = 0.45, *R^2^* = 0.00008). We were expecting IMD to play an important role (positive or negative) in loneliness but were interested to find this was not the case. It did quickly become clear though that Urban Rural classification was very relevant to lonelines. 
+
+<br>
+
+#### Linear Regression Models
+
+We explored the use of our new measures by running linear regression models of the loneliness z-score developed by the ONS against the SDS and the population mobility for 5-14 year olds. We found there was **a small but highly significant association**, with both the SDS (*p* < 0.001, adj *R^2^* = 0.001) and population mobility scores (*p* < 0.001, adj *R^2^* = 0.01 ). 
+
+```{r figures1, echo = FALSE, error=FALSE, warning=FALSE, message=FALSE}
+
+library(dplyr)
+library(plotly)
+
+joined_data <- readRDS("set-up-files/joined_data.RDS") #see creation of this in 'Desirability metric and outputs.R'
+
+joined_data2 <- joined_data %>% filter(year == '2017')
+
+aggregate_loneliness <- joined_data %>%
+                        filter( year == "2017")%>%
+                        group_by(LEA.name) %>%
+                        summarise(loneliness_zscore = mean(loneliness_zscore),
+                                  pop_change = mean(pop_change),
+                                  SDS = mean(SDS))
+
+
+# plot of pop change bs loneliness score for 2017
+p1 <- plot_ly(x =aggregate_loneliness$pop_change,
+        y = aggregate_loneliness$loneliness_zscore, 
+        type = "scatter"
+        ) %>%
+  add_trace(x = aggregate_loneliness$pop_change,
+            y = fitted(lm(aggregate_loneliness$loneliness_zscore ~ aggregate_loneliness$pop_change)),
+            mode = "lines") %>%
+  layout(xaxis = list(title = "Population Mobility for 5-14 year olds"),
+         yaxis = list(title = "Loneliness z-score"),
+         showlegend = FALSE)
+
+
+# plot of sds vs loneliness score for 2017
+p2 <- plot_ly(x =aggregate_loneliness$SDS,
+        y = aggregate_loneliness$loneliness_zscore, 
+        type = "scatter") %>%
+  add_trace(x = aggregate_loneliness$SDS,
+            y = fitted(lm(aggregate_loneliness$loneliness_zscore ~ aggregate_loneliness$SDS)),
+            mode = "lines") %>%
+  layout(xaxis = list(title = "SDS"),
+         yaxis = list(title = "Loneliness z-score"),
+         showlegend = FALSE)
+
+p <- subplot(p2, p1, shareY = TRUE, shareX = TRUE)
+
+p
+
+
+```
+
+
+This suggests that the movement of school-aged children, and the educational quality available, have an impact on the loneliness in an area. It makes sense that these factors only explain a small amount of the variance, since a huge number of factors impact on loneliness in any one place, but the significance shows that movement for education may play a part. 
+
+<br>
+
+#### Multiple Regression Model 
+
+First, we ran the following multiple regression model:  
+``` Loneliness Z-Score ~ SDS*Population Mobility + IMD + Urban/Rural + LEA Population ```
+
+
+We still saw that population mobility is highly significant (*p* < 0.001) with a small positive association, whilst SDS is no longer significant (*p* = 0.097). Urban/rural appears to exert the most influence on the model, which again suggests that whilst movement for education is important, it is not the most important factor in area-level loneliness. The adjusted *R^2^* of this new model was 0.03. 
+
+```{r mlr,echo = FALSE, error=FALSE, warning = FALSE, message=FALSE}
+
+mlr5 <- lm(loneliness_zscore ~ pop_change*SDS + urb_rur + LEA.population + imd, data = df_scaled)
+```
+
+<br>
+
+#### Hierarchical Mixed-Effects Model
+
+Next, we wanted to account for the hierarchical data structure that is inherent in the data we made, where GP level information is nested within LEAs. Here the data from 2016 was reintroduced. To manage this we built a linear mixed model, with random effects that accounted for the nesting structure of GP within LEA. An ANOVA on the nested vs un-nested structure showed that the nesting structure was significant, so we produced the following: 
+
+```Loneliness Z-Score ~ SDS*Population Mobility + (1 | LEA / GP )```
+
+```{r mlm,echo = FALSE, error=FALSE, warning = FALSE, message=FALSE}
+library(lme4)
+
+df <- readRDS('set-up-files/df.RDS')
+df_scaled <- readRDS('set-up-files/df_scaled.RDS')
+
+mlm3 <- lmer(loneliness_zscore ~  SDS*pop_change + (1|Old.LEA.code/GP_ID),
+             data = df_scaled, REML = FALSE)
+
+
+# calculate ICC for lmer model object
+# From https://gist.github.com/benwhalley/1297dc3b1d616de41837ca015f338b10
+icc <- function(m){
+  vc <- as.data.frame((VarCorr(m)))
+  l <- vc$vcov
+  data_frame(grp=vc$grp, icc=sapply(l, function(x){x/sum(l)}))
+}
+#(icc(mlm3))
+
+```
+
+This model showed us that when random effects are accounted for in the model, the Population Mobility is still a significant addition to the model (*t* = 15.20), with a small positive assoication between mobility of 5-14 year olds and loneliness. SDS is once again not significant in this model.  
+
+The intra-class correlation coefficients for the groups are given below: 
+
+Group         | ICC
+--------------|------
+GP within LEA | 0.66
+LEA           | 0.17
+
+These show that the groupings are actually fairly ineffective for LEAs, but moderately effective for GPs within LEAs. 
+
+<br>
+
+#### Decision Tree
+
+The last way in which we modelled the data was using a decision tree. We were interested in how the decision tree would used the Population Mobility data and the SDS to make decisions on grouping loneliness in the data set. We ran the following model, using data aggregated to LEA level for 2017:  
+
+```Loneliness Z-Score ~ Population Mobility + SDS```
+
+The decision tree has two levels, which correspond to the two variables. For Local Authorities with Population Mobility less than 8.1 (which is around the mean), loneliness is relatively close to the population average. For those with high Population Mobility (above the mean) and better SDS scores loneliness appears higher than those with poor SDS scores.
+
+
+```{r tree,echo = FALSE, error=FALSE, warning = FALSE, message=FALSE}
+
+#see what decision tree looks like
+#install.packages("rpart")
+library(rpart)
+#install.packages(("rpart.plot"))
+library(rpart.plot)
+# CART model
+
+#reload data
+joined_data <- readRDS("set-up-files/joined_data.RDS") #see creation of this in 'Desirability metric and outputs.R'
+
+joined_data2 <- joined_data %>% filter(year == '2017')
+
+aggregate_loneliness <- joined_data %>%
+                        filter( year == "2017")%>%
+                        group_by(LEA.name) %>%
+                        summarise(loneliness_zscore = mean(loneliness_zscore),
+                                  pop_change = mean(pop_change),
+                                  SDS = mean(SDS))
+
+
+colnames(aggregate_loneliness)[3] <- "Population Mobility"
+
+#normalise SDS for easier interpretation
+aggregate_loneliness$SDS <- (aggregate_loneliness$SDS-min(aggregate_loneliness$SDS))/(max(aggregate_loneliness$SDS)-min(aggregate_loneliness$SDS))
+
+#fit tree
+tree = rpart(loneliness_zscore ~ `Population Mobility` + SDS, data=aggregate_loneliness)
+#prune tree for lowest cross-validated error
+tree <- prune(tree, cp= (tree$cptable[which.min(tree$cptable[,"xerror"]),"CP"]) )
+#plot tree
+rpart.plot(tree, box.palette="RdBu", shadow.col="gray")
+
+```
+
+
+
+## So, in conlusion...
+We have explored a number of models and created novel metrics to explore the relationship between loneliness and movement for education. What we have found it that the population change caused by the moving of children aged 4-15 has an impact on loneliness in communities, though not a big one. We could hypothesis that the reason that children of this age move is mostly to persue better educational opportunities and so movement for the purpose of education in primary and secondary students is associated with loneliness.
+
+In particular the decision tree suggests that places with 'better' schools (higher SDS) who experience high turn over of children are more likely to be lonely than those with low turnover and those with high turnover and poorer schools. This would support our hypothesis that families moving into areas with better schools for upward social mobility through education creates more loneliness in those areas.
+
+
+## What's next?
+We set out to answer this question using open government data, and wish to acknowledge some limitations that came with that:  
+
+* The measures used for the Loneliness Index are highly associated with age related diseases and mental health which are in turn affected by poverty, local government spending and location specific variables, such as NHS trust prescribing policies.  
+* We decided not to include undergraduates since they often stay registered at their home GP, so measuring GP prescribing may not be accurate for their population.  
+* No information is publically available on where people have moved to-from, only the inflow and outflow from each area.  
+* Movement within boroughs (i.e. to new catchment areas) may have as significant effect on loneliness as movement between Local Authorities but there are no figures for this data publicly available.  
+
+This being said, we think it would very interesting to fully model the flow of people within the UK using metrics such as Population Mobility and a form of education desireability for all levels of education to get a better understanding of this phenomenon. 
+
+```{r GitHub, fig.align="left", echo=FALSE, out.width='10%'}
+knitr::include_graphics('images/GitHub.png')
+```
+For code and data please see our [GitHub repository](https://github.com/ninadicara/ons-data-challenge-2019).
