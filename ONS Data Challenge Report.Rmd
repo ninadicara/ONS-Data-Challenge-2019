@@ -333,7 +333,7 @@ rpart.plot(tree, box.palette="RdBu", shadow.col="gray")
 
 
 ## So, in conlusion...
-We have explored a number of models and created novel metrics to explore the relationship between loneliness and movement for education. What we have found it that the population change caused by the moving of children aged 4-15 has an impact on loneliness in communities, though not a big one. We could hypothesis that the reason that children of this age move is mostly to persue better educational opportunities and so movement for the purpose of education in primary and secondary students is associated with loneliness.
+We have explored a number of models and created novel metrics to explore the relationship between loneliness and movement for education. What we have found it that the population change caused by the moving of children aged 4-15 has an impact on loneliness in communities, though not a big one. We could hypothesis that the reason that children of this age move is mostly to pursue better educational opportunities and so movement for the purpose of education in primary and secondary students is associated with loneliness.
 
 In particular the decision tree suggests that places with 'better' schools (higher SDS) who experience high turn over of children are more likely to be lonely than those with low turnover and those with high turnover and poorer schools. This would support our hypothesis that families moving into areas with better schools for upward social mobility through education creates more loneliness in those areas.
 
@@ -346,7 +346,7 @@ We set out to answer this question using open government data, and wish to ackno
 * No information is publically available on where people have moved to-from, only the inflow and outflow from each area.  
 * Movement within boroughs (i.e. to new catchment areas) may have as significant effect on loneliness as movement between Local Authorities but there are no figures for this data publicly available.  
 
-This being said, we think it would very interesting to fully model the flow of people within the UK using metrics such as Population Mobility and a form of education desireability for all levels of education to get a better understanding of this phenomenon. 
+This being said, we think it would very interesting to fully model the flow of people within the UK using metrics such as Population Mobility and a form of education desirability for all levels of education to get a better understanding of this phenomenon. 
 
 ```{r GitHub, fig.align="left", echo=FALSE, out.width='10%'}
 knitr::include_graphics('images/GitHub.png')
