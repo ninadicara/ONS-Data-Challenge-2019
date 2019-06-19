@@ -1,0 +1,153 @@
+﻿Old LA Code,New LA Code,LA Name
+201,E09000001,City of London
+202,E09000007,Camden
+203,E09000011,Greenwich
+204,E09000012,Hackney
+205,E09000013,Hammersmith and Fulham
+206,E09000019,Islington
+207,E09000020,Kensington and Chelsea
+208,E09000022,Lambeth
+209,E09000023,Lewisham
+210,E09000028,Southwark
+211,E09000030,Tower Hamlets
+212,E09000032,Wandsworth
+213,E09000033,Westminster
+301,E09000002,Barking and Dagenham
+302,E09000003,Barnet
+303,E09000004,Bexley
+304,E09000005,Brent
+305,E09000006,Bromley
+306,E09000008,Croydon
+307,E09000009,Ealing
+308,E09000010,Enfield
+309,E09000014,Haringey
+310,E09000015,Harrow
+311,E09000016,Havering
+312,E09000017,Hillingdon
+313,E09000018,Hounslow
+314,E09000021,Kingston upon Thames
+315,E09000024,Merton
+316,E09000025,Newham
+317,E09000026,Redbridge
+318,E09000027,Richmond upon Thames
+319,E09000029,Sutton
+320,E09000031,Waltham Forest
+330,E08000025,Birmingham
+331,E08000026,Coventry
+332,E08000027,Dudley
+333,E08000028,Sandwell
+334,E08000029,Solihull
+335,E08000030,Walsall
+336,E08000031,Wolverhampton
+340,E08000011,Knowsley
+341,E08000012,Liverpool
+342,E08000013,St. Helens
+343,E08000014,Sefton
+344,E08000015,Wirral
+350,E08000001,Bolton
+351,E08000002,Bury
+352,E08000003,Manchester
+353,E08000004,Oldham
+354,E08000005,Rochdale
+355,E08000006,Salford
+356,E08000007,Stockport
+357,E08000008,Tameside
+358,E08000009,Trafford
+359,E08000010,Wigan
+370,E08000016,Barnsley
+371,E08000017,Doncaster
+372,E08000018,Rotherham
+373,E08000019,Sheffield
+380,E08000032,Bradford
+381,E08000033,Calderdale
+382,E08000034,Kirklees
+383,E08000035,Leeds
+384,E08000036,Wakefield
+390,E08000020,Gateshead
+391,E08000021,Newcastle upon Tyne
+392,E08000022,North Tyneside
+393,E08000023,South Tyneside
+394,E08000024,Sunderland
+420,E06000053,Isles of Scilly
+800,E06000022,Bath and North East Somerset
+801,E06000023,"Bristol, City of"
+802,E06000024,North Somerset
+803,E06000025,South Gloucestershire
+805,E06000001,Hartlepool
+806,E06000002,Middlesbrough
+807,E06000003,Redcar and Cleveland
+808,E06000004,Stockton-on-Tees
+810,E06000010,"Kingston upon Hull, City of"
+811,E06000011,East Riding of Yorkshire
+812,E06000012,North East Lincolnshire
+813,E06000013,North Lincolnshire
+815,E10000023,North Yorkshire
+816,E06000014,York
+821,E06000032,Luton
+822,E06000055,Bedford
+823,E06000056,Central Bedfordshire
+825,E10000002,Buckinghamshire
+826,E06000042,Milton Keynes
+830,E10000007,Derbyshire
+831,E06000015,Derby
+835,E10000009,Dorset
+836,E06000029,Poole
+837,E06000028,Bournemouth
+840,E06000047,Durham
+841,E06000005,Darlington
+845,E10000011,East Sussex
+846,E06000043,Brighton and Hove
+850,E10000014,Hampshire
+851,E06000044,Portsmouth
+852,E06000045,Southampton
+855,E10000018,Leicestershire
+856,E06000016,Leicester
+857,E06000017,Rutland
+860,E10000028,Staffordshire
+861,E06000021,Stoke-on-Trent
+865,E06000054,Wiltshire
+866,E06000030,Swindon
+867,E06000036,Bracknell Forest
+868,E06000040,Windsor and Maidenhead
+869,E06000037,West Berkshire
+870,E06000038,Reading
+871,E06000039,Slough
+872,E06000041,Wokingham
+873,E10000003,Cambridgeshire
+874,E06000031,Peterborough
+876,E06000006,Halton
+877,E06000007,Warrington
+878,E10000008,Devon
+879,E06000026,Plymouth
+880,E06000027,Torbay
+881,E10000012,Essex
+882,E06000033,Southend-on-Sea
+883,E06000034,Thurrock
+884,E06000019,Herefordshire
+885,E10000034,Worcestershire
+886,E10000016,Kent
+887,E06000035,Medway
+888,E10000017,Lancashire
+889,E06000008,Blackburn with Darwen
+890,E06000009,Blackpool
+891,E10000024,Nottinghamshire
+892,E06000018,Nottingham
+893,E06000051,Shropshire
+894,E06000020,Telford and Wrekin
+895,E06000049,Cheshire East
+896,E06000050,Cheshire West and Chester
+908,E06000052,Cornwall
+909,E10000006,Cumbria
+916,E10000013,Gloucestershire
+919,E10000015,Hertfordshire
+921,E06000046,Isle of Wight
+925,E10000019,Lincolnshire
+926,E10000020,Norfolk
+928,E10000021,Northamptonshire
+929,E06000048,Northumberland
+931,E10000025,Oxfordshire
+933,E10000027,Somerset
+935,E10000029,Suffolk
+936,E10000030,Surrey
+937,E10000031,Warwickshire
+938,E10000032,West Sussex
