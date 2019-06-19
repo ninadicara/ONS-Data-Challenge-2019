@@ -1,5 +1,15 @@
 # ONS Data Challenge 2019 - Is loneliness associated with movement for education?
 
+Authors:  
+Nina Di Cara - University of Bristol, PhD Student  
+Tiffany Massey - Ernst and Young, Analyst  
+
+This repository contains our entry to the Jean Golding Institute and ONS Data Challenge 2019.  
+
+This repository contains public sector information licensed under the Open Government Licence v3.0. http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/  
+
+<br>
+
 ## To view the analysis 
 The final report is available at 'ONS_Data_Challenge_Report.HTML'
 
