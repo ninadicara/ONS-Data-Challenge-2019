@@ -6,7 +6,7 @@ Tiffany Massey - Ernst and Young, Analyst
 
 This repository contains our entry to the Jean Golding Institute and ONS Data Challenge 2019.  
 
-This repository contains public sector information licensed under the Open Government Licence v3.0. http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/  
+This repository contains public sector information licensed under the [Open Government Licence v3.0.](http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) as well as an MIT licence which is given under 'LICENSE'    
 
 <br>
 
@@ -14,13 +14,13 @@ This repository contains public sector information licensed under the Open Gover
 The final report is available at 'ONS_Data_Challenge_Report.HTML'
 
 ## To re-run the analysis and results
-Run the top-level file called 'source'. This will recreate all the RDS documents in the set-up-files, and the master df. 
+Running the .R files in '/set-up-files' will recreate all the RDS documents, provided that 'master_dataset.R' is run last.  
 Alternatively you can re-create the final dataset from the RDS objects already available by running the master_dataset.R file. 
 
 All analyses are available in the 'modelling data.R' document, and the 'ONS Data Challenge Report.Rmd', which contains the markdown code for the final report. 
 
 ## Data Sources:  
-In order to ensure our work is fully reproducible we have included the sources for all the datasets below. If you need further details on accessing any of these please let us know.  
+In order to ensure our work is transparent and reproducible we have included the sources for all the datasets below. If you need further details on accessing any of these please let us know.  
 <br> 
 
 * [england_ks2final.csv](https://www.compare-school-performance.service.gov.uk/download-data)  
