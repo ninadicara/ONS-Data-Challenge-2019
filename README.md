@@ -33,4 +33,4 @@ In order to ensure our work is transparent and reproducible we have included the
 * [nlac-2011.csv](https://www.gov.uk/government/statistics/new-local-authority-codes-january-2011)  
 * [england_cfrfull.xlsx](https://www.compare-school-performance.service.gov.uk/download-data)  
 * [england_ofsted-schools.xlsx](https://www.compare-school-performance.service.gov.uk/download-data)  
-* loneliness_data.csv - Data obtained directly from the ONS  
+* Data from the [Loneliness Prescription Index](https://datasciencecampus.ons.gov.uk/developing-a-loneliness-prescription-index/), provided by the ONS for the purposes of the Data Challenge 
