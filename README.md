@@ -14,8 +14,7 @@ This repository contains public sector information licensed under the [Open Gove
 The final report is available at 'ONS_Data_Challenge_Report.HTML'
 
 ## To re-run the analysis and results
-Running the .R files in '/set-up-files' will recreate all the RDS documents, provided that 'master_dataset.R' is run last.  
-Alternatively you can re-create the final dataset from the RDS objects already available by running the master_dataset.R file. 
+Running the .R files in '/set-up-files' will recreate all the RDS files needed to run 'master_dataset.R'. The only dataset not given in this repo is the loneliness dataset, which is only available directly from the ONS. 
 
 All analyses are available in the 'modelling data.R' document, and the 'ONS Data Challenge Report.Rmd', which contains the markdown code for the final report. 
 
